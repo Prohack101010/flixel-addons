@@ -3,19 +3,22 @@ package flixel.addons.util;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.addons.display.FlxBackdrop;
 import flixel.group.FlxGroup;
 import flixel.text.FlxText;
-import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
-import flixel.util.FlxAxes;
+import flixel.tile.FlxTilemap;
 import flixel.util.FlxColor;
-import haxe.xml.Parser;
+import flixel.addons.display.FlxBackdrop;
 import openfl.Assets;
+import haxe.xml.Parser;
 
 using haxe.EnumTools;
 
+#if haxe4
 import haxe.xml.Access;
+#else
+import haxe.xml.Fast as Access;
+#end
 
 /**
  * Loads a scene from XML file. Scenes contain layers of entities (custom FlxSprite),
@@ -201,23 +204,25 @@ class FlxScene
 			switch (element.name)
 			{
 				case "backdrop":
-					var att = element.att;
-					var graphics:String = assetsDirectory + att.graphics;
-					var repeatAxes = FlxAxes.fromBools(parseBool(att.repeatX), parseBool(att.repeatY));
+					var x_att:Float = Std.parseInt(element.att.x);
+					var y_att:Float = Std.parseInt(element.att.y);
+					var graphics:String = assetsDirectory + element.att.graphics;
+					var repeatX:Bool = parseBool(element.att.repeatX);
+					var repeatY:Bool = parseBool(element.att.repeatY);
+					var scrollFactorX:Float = Std.parseFloat(element.att.scrollFactorX);
+					var scrollFactorY:Float = Std.parseFloat(element.att.scrollFactorY);
 
-					var backdrop = new FlxBackdrop(graphics, repeatAxes);
-					backdrop.x = Std.parseInt(att.x);
-					backdrop.y = Std.parseInt(att.y);
-					backdrop.scrollFactor.x = Std.parseFloat(att.scrollFactorX);
-					backdrop.scrollFactor.y = Std.parseFloat(att.scrollFactorY);
+					var instance = new FlxBackdrop(graphics, scrollFactorX, scrollFactorY, repeatX, repeatY);
+					instance.x = x_att;
+					instance.y = y_att;
 
-					addInstance(backdrop, container, element);
+					addInstance(instance, container, element);
 
 				case "sprite":
-					var sprite = new FlxSprite();
-					applySpriteProperties(sprite, element);
+					var instance = new FlxSprite();
+					applySpriteProperties(instance, element);
 
-					addInstance(sprite, container, element);
+					addInstance(instance, container, element);
 			}
 		}
 	}
@@ -454,10 +459,10 @@ class FlxScene
 	}
 
 	/**
-	 * Gets a specific constant by ID.
+	 * Gets a specific constant by id.
 	 *
 	 * @param 	id 	Constant name.
-	 * @return 	Bool, Int, Float or String associated with the ID.
+	 * @return 	Bool, Int, Float or String.
 	 */
 	public function const(id:String):Dynamic
 	{
@@ -470,10 +475,10 @@ class FlxScene
 	}
 
 	/**
-	 * Gets a specific object by ID.
+	 * Gets a specific object by id.
 	 *
-	 * @param 	id 	Constant name.
-	 * @return	The object associated with the ID.
+	 * @param 	Id 	Constant name.
+	 * @return
 	 */
 	public function object(id:String):Dynamic
 	{
@@ -488,7 +493,7 @@ class FlxScene
 	/**
 	 * Helper function to parse Booleans from String to Bool
 	 *
-	 * @param value 	String value
+	 * @param Value 	String value
 	 */
 	function parseBool(value:String):Bool
 	{
