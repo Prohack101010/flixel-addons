@@ -1,6 +1,6 @@
 package flixel.addons.display;
 
-import openfl.geom.ColorTransform;
+import flash.geom.ColorTransform;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -259,8 +259,7 @@ class FlxNestedSprite extends FlxSprite
 
 	override public function draw():Void
 	{
-		if(_frame != null) 
-			super.draw();
+		super.draw();
 
 		for (child in children)
 		{

@@ -2,7 +2,11 @@ package flixel.addons.editors.tiled;
 
 import flixel.addons.editors.tiled.TiledLayer.TiledLayerType;
 import flixel.util.FlxColor;
+#if haxe4
 import haxe.xml.Access;
+#else
+import haxe.xml.Fast as Access;
+#end
 
 /**
  * Copyright (c) 2013 by Samuel Batista

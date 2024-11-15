@@ -1,11 +1,5 @@
 package flixel.addons.transition;
 
-// TODO: remove this check when min flixel version is 5.6.0,
-// So that FlxAddonDefines will handle this
-#if (flixel < "5.3.0")
-#error "Flixel-Addons is not compatible with flixel versions older than 5.3.0";
-#end
-
 import flixel.FlxState;
 
 /**
@@ -70,7 +64,7 @@ class FlxTransitionableState extends FlxState
 		super();
 	}
 
-	override function destroy():Void
+	override public function destroy():Void
 	{
 		super.destroy();
 		transIn = null;
@@ -78,27 +72,36 @@ class FlxTransitionableState extends FlxState
 		_onExit = null;
 	}
 
-	override function create():Void
+	override public function create():Void
 	{
 		super.create();
 		transitionIn();
 	}
 
-	override function startOutro(onOutroComplete:() -> Void)
+	override public function switchTo(nextState:FlxState):Bool
 	{
 		if (!hasTransOut)
-			onOutroComplete();
-		else if (!_exiting)
+			return true;
+
+		if (!_exiting)
+			transitionToState(nextState);
+
+		return transOutFinished;
+	}
+
+	function transitionToState(nextState:FlxState):Void
+	{
+		// play the exit transition, and when it's done call FlxG.switchState
+		_exiting = true;
+		transitionOut(function()
 		{
-			// play the exit transition, and when it's done call FlxG.switchState
-			_exiting = true;
-			transitionOut(onOutroComplete);
-			
-			if (skipNextTransOut)
-			{
-				skipNextTransOut = false;
-				finishTransOut();
-			}
+			FlxG.switchState(nextState);
+		});
+
+		if (skipNextTransOut)
+		{
+			skipNextTransOut = false;
+			finishTransOut();
 		}
 	}
 

@@ -2,7 +2,11 @@ package flixel.addons.editors.tiled;
 
 import haxe.Int64;
 import flixel.math.FlxPoint;
+#if haxe4
 import haxe.xml.Access;
+#else
+import haxe.xml.Fast as Access;
+#end
 
 /**
  * (original by Matt Tuttle based on Thomas Jahn's. Haxe port by Adrien Fischer)
@@ -27,7 +31,6 @@ class TiledObject
 	public static inline var POLYGON = 2;
 	public static inline var POLYLINE = 3;
 	public static inline var TILE = 4;
-	public static inline var POINT = 5;
 
 	public var x:Int;
 	public var y:Int;
@@ -148,10 +151,6 @@ class TiledObject
 		{
 			objectType = POLYLINE;
 			getPoints(source.node.polyline);
-		}
-		else if (source.hasNode.point)
-		{
-			objectType = POINT;
 		}
 	}
 

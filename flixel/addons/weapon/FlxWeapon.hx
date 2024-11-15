@@ -1,11 +1,5 @@
 package flixel.addons.weapon;
 
-// TODO: remove this check when min flixel version is 5.6.0,
-// So that FlxAddonDefines will handle this
-#if (flixel < "5.3.0")
-#error "Flixel-Addons is not compatible with flixel versions older than 5.3.0";
-#end
-
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -18,7 +12,7 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRandom;
 import flixel.math.FlxRect;
 import flixel.math.FlxVelocity;
-import flixel.sound.FlxSound;
+import flixel.system.FlxSound;
 import flixel.tile.FlxTilemap;
 import flixel.util.helpers.FlxBounds;
 import flixel.util.helpers.FlxRange;
@@ -40,7 +34,7 @@ import flixel.util.helpers.FlxRange;
  * TODO: Bullet trails - blur FX style and Missile Command "draw lines" style? (could be another FX plugin)
  * TODO: Homing Missiles
  * TODO: Bullet uses random sprite from sprite sheet (for rainbow style bullets), or cycles through them in sequence?
- * TODO: Some Weapon base classes like shotgun, laser, etc?
+ * TODO: Some Weapon base classes like shotgun, lazer, etc?
  */
 typedef FlxWeapon = FlxTypedWeapon<FlxBullet>;
 
@@ -153,8 +147,8 @@ class FlxTypedWeapon<TBullet:FlxBullet>
 	 * You should call one of the makeBullet functions to visually create the bullets.
 	 * Then either use setDirection with fire() or one of the fireAt functions to launch them.
 	 *
-	 * @param	name		The name of your weapon (i.e. "laser" or "shotgun"). For your internal reference really, but could be displayed in-game.
-	 * @param	bulletFactory	FlxWeapon uses this factory function to actually create a bullet
+	 * @param	Name		The name of your weapon (i.e. "lazer" or "shotgun"). For your internal reference really, but could be displayed in-game.
+	 * @param	BulletFactory	FlxWeapon uses this factory function to actually create a bullet
 	 * @param	fireFrom	enum that describes the weapon firing position, for Example Parent, Position.
 	 * @param	speedMode	enum that describes the bullets speed mode, for Example Velocity, Acceleration.
 	 */
@@ -173,7 +167,10 @@ class FlxTypedWeapon<TBullet:FlxBullet>
 	/**
 	 * Internal function that handles the actual firing of the bullets
 	 *
-	 * @param	Mode	Mode to use for firing the bullet
+	 * @param	Method
+	 * @param	X
+	 * @param	Y
+	 * @param	Target
 	 * @return	True if a bullet was fired or false if one wasn't available. The bullet last fired is stored in FlxWeapon.prevBullet
 	 */
 	function runFire(Mode:FlxWeaponFireMode):Bool
@@ -291,7 +288,7 @@ class FlxTypedWeapon<TBullet:FlxBullet>
 	 *
 	 * @param	point	The to be rotated point
 	 * @param	origin	The to be rotated around point. usually the origin of the parent flxsprite
-	 * @param	angle	the current angle from of the origin. usually the parent angle.
+	 * @param	point	the current angle from of the origin. usually the parent angle.
 	 * @return	The new rotated Point
 	 */
 	public function rotatePoints(point:FlxPoint, origin:FlxPoint, angle:Float):FlxPoint
@@ -372,7 +369,7 @@ class FlxTypedWeapon<TBullet:FlxBullet>
 	/**
 	 * Fires a bullet (if one is available) based on the given angle
 	 *
-	 * @param	angle	The angle (in degrees) calculated in clockwise positive direction (down = 90 degrees positive, right = 0 degrees positive, up = 90 degrees negative)
+	 * @param	Angle	The angle (in degrees) calculated in clockwise positive direction (down = 90 degrees positive, right = 0 degrees positive, up = 90 degrees negative)
 	 * @return	True if a bullet was fired or false if one wasn't available. A reference to the bullet fired is stored in FlxWeapon.currentBullet.
 	 */
 	public inline function fireFromAngle(angle:FlxBounds<Float>):Bool
@@ -430,20 +427,16 @@ class FlxTypedWeapon<TBullet:FlxBullet>
 		}
 	}
 
-	function shouldBulletHit(object:FlxObject, bullet:FlxObject):Bool
+	function shouldBulletHit(Object:FlxObject, Bullet:FlxObject):Bool
 	{
-		if (parent == object && skipParentCollision)
+		if (parent == Object && skipParentCollision)
 		{
 			return false;
 		}
 
-		if ((object is FlxTilemap))
+		if ((Object is FlxTilemap))
 		{
-			#if (flixel < "5.9.0")
-			return cast(object, FlxTilemap).overlapsWithCallback(bullet);
-			#else
-			return cast(object, FlxTilemap).objectOverlapsTiles(bullet);
-			#end
+			return cast(Object, FlxTilemap).overlapsWithCallback(Bullet);
 		}
 		else
 		{

@@ -1,6 +1,6 @@
 package flixel.addons.display.shapes;
 
-import openfl.geom.Matrix;
+import flash.geom.Matrix;
 import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
 import flixel.util.FlxSpriteUtil;

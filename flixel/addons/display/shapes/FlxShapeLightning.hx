@@ -1,8 +1,8 @@
 package flixel.addons.display.shapes;
 
-import openfl.display.BitmapData;
-import openfl.filters.GlowFilter;
-import openfl.geom.Matrix;
+import flash.display.BitmapData;
+import flash.filters.GlowFilter;
+import flash.geom.Matrix;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.math.FlxPoint;

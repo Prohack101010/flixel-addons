@@ -1,6 +1,10 @@
 package flixel.addons.editors.tiled;
 
+#if haxe4
 import haxe.xml.Access;
+#else
+import haxe.xml.Fast as Access;
+#end
 
 class TiledImageLayer extends TiledLayer
 {

@@ -1,19 +1,13 @@
 package flixel.addons.text;
 
-// TODO: remove this check when min flixel version is 5.6.0,
-// So that FlxAddonDefines will handle this
-#if (flixel < "5.3.0")
-#error "Flixel-Addons is not compatible with flixel versions older than 5.3.0";
-#end
-
 import flixel.FlxG;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.system.FlxAssets;
 import flixel.text.FlxText;
-import flixel.sound.FlxSound;
+import flixel.system.FlxSound;
 import flixel.math.FlxRandom;
-import openfl.media.Sound;
+import flash.media.Sound;
 
 #if !flash
 @:sound("assets/sounds/type.ogg")
@@ -29,7 +23,6 @@ class TypeSound extends Sound {}
  * This is loosely based on the TypeText class by Noel Berry, who wrote it for his Ludum Dare 22 game - Abandoned
  * http://www.ludumdare.com/compo/ludum-dare-22/?action=preview&uid=1527
  * @author Noel Berry
- * @see [Flixel Demos - FlxTypeText](https://haxeflixel.com/demos/FlxTypeText/)
  */
 class FlxTypeText extends FlxText
 {
@@ -286,6 +279,7 @@ class FlxTypeText extends FlxText
 	 * @param	ForceRestart	Whether or not to start this animation over if currently animating; false by default.
 	 * @param	SkipKeys		An array of keys as string values (e.g. `[FlxKey.SPACE, FlxKey.L]`) that will advance the text. Can also be set separately.
 	 * @param	Callback		An optional callback function, to be called when the erasing animation is complete.
+	 * @param	Params			Optional parameters to pass to the callback function.
 	 */
 	public function erase(?Delay:Float, ForceRestart:Bool = false, ?SkipKeys:Array<FlxKey>, ?Callback:Void->Void):Void
 	{

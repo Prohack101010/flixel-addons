@@ -3,20 +3,20 @@ package flixel.addons.ui;
 #if FLX_MOUSE
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.group.*;
+import flixel.group.FlxSpriteGroup;
+import flixel.text.FlxText;
+import flixel.util.FlxDestroyUtil;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.text.FlxText;
-import flixel.util.FlxColor;
-import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSpriteUtil;
+import flixel.util.FlxColor;
 
 /**
  * A slider GUI element for float and integer manipulation.
  * @author Gama11
  */
-class FlxSlider extends #if (flixel < "5.7.0") FlxSpriteGroup #else FlxSpriteContainer #end
+class FlxSlider extends FlxSpriteGroup
 {
 	/**
 	 * The horizontal line in the background.
@@ -271,17 +271,7 @@ class FlxSlider extends #if (flixel < "5.7.0") FlxSpriteGroup #else FlxSpriteCon
 	override public function update(elapsed:Float):Void
 	{
 		// Clicking and sound logic
-		#if (flixel >= version("5.7.0"))
-		final camera = getCameras()[0];// else use this.camera
-		#end
-		#if (flixel >= version("5.9.0"))
-		final viewX = FlxG.mouse.viewX;
-		final viewY = FlxG.mouse.viewY;
-		#else
-		final viewX = FlxG.mouse.screenX;
-		final viewY = FlxG.mouse.screenY;
-		#end
-		if (FlxMath.pointInFlxRect(viewX, viewY, _bounds))
+		if (FlxMath.mouseInFlxRect(false, _bounds))
 		{
 			if (hoverAlpha != 1)
 			{
@@ -299,7 +289,7 @@ class FlxSlider extends #if (flixel < "5.7.0") FlxSpriteGroup #else FlxSpriteCon
 
 			if (FlxG.mouse.pressed)
 			{
-				handle.x = viewX;
+				handle.x = FlxG.mouse.screenX;
 				updateValue();
 
 				#if FLX_SOUND_SYSTEM
